@@ -47,6 +47,7 @@ venv.bak/
 .pdm.toml
 __pypackages__/
 poetry.toml
+.python-version
 
 # Testing and coverage
 .tox/
