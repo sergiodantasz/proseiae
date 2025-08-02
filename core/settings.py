@@ -20,6 +20,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # django-cleanup
     "django_cleanup",
+    # django-tailwind
+    "tailwind",
+    "theme",
 ]
 
 MIDDLEWARE = [
@@ -90,3 +93,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if DEBUG:
     INSTALLED_APPS.append("django_browser_reload")
     MIDDLEWARE.append("django_browser_reload.middleware.BrowserReloadMiddleware")
+
+TAILWIND_APP_NAME = "theme"
