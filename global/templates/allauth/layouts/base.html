@@ -1,4 +1,4 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags django_htmx %}
 <!DOCTYPE html>
 <html lang="pt-BR" class="font-inter">
   <head>
@@ -7,9 +7,11 @@
     <title>ProseiAê!</title>
     {% tailwind_css %}
     <script src="{% static "global/js/theme.js" %}"></script>
+    {% htmx_script %}
     {% block extra_head %}{% endblock extra_head %}
   </head>
-  <body class="min-h-dvh flex flex-col">
+  <body class="min-h-dvh flex flex-col"
+        hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
     {% include "global/partials/_navbar.html" %}
     {% if messages %}
       {% include "global/partials/_messages.html" %}

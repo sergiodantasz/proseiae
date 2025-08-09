@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "allauth.account",
     # heroicons
     "heroicons",
+    # django-htmx
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -43,6 +45,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # django-allauth
     "allauth.account.middleware.AccountMiddleware",
+    # django-htmx
+    "django_htmx.middleware.HtmxMiddleware",
     # Project middleware
     "core.middleware.ThemeMiddleware",
 ]
