@@ -1,0 +1,25 @@
+{% extends "allauth/layouts/base.html" %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Crie uma conta</h1>
+    <p class="opacity-50">Converse com as pessoas em tempo real.</p>
+  </div>
+  <form action="{% url "account_signup" %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    {% for field in form %}
+      <label class="floating-label">
+        <span>{{ field.label }}</span>
+        {{ field }}
+      </label>
+      {% if field.errors %}
+        {% for error in field.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+      {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Criar conta</button>
+  </form>
+  <p class="text-center text-sm">
+    Já tem uma conta? <a href="{% url 'account_login' %}" class="link link-primary link-hover">Entre agora.</a>
+  </p>
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends "allauth/layouts/base.html" %}
+{% load heroicons %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Alteração de e-mail</h1>
+    <p class="opacity-50">Preencha os campos abaixo para alterar seu e-mail.</p>
+  </div>
+  <form action="{% url "account_email" %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    <div class="flex flex-col gap-2">
+      {% if current_emailaddress %}
+        <div role="alert" class="flex items-center gap-2 alert">
+          <p>
+            <span class="font-bold">E-mail atual:</span> {{ current_emailaddress.email }}
+          </p>
+          {% include "account/partials/_badge-verified.html" %}
+        </div>
+      {% endif %}
+      {% if new_emailaddress %}
+        <div role="alert" class="flex items-center gap-2 alert">
+          <p>
+            {% if not current_emailaddress %}
+              <span class="font-bold">E-mail atual:</span>
+            {% else %}
+              <span class="font-bold">Novo e-mail:</span>
+            {% endif %}
+            <span>{{ new_emailaddress.email }}</span>
+          </p>
+          {% if new_emailaddress.verified %}
+            {% include "account/partials/_badge-verified.html" %}
+          {% else %}
+            {% include "account/partials/_badge-not-verified.html" %}
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+    {% if new_emailaddress %}
+      <div role="alert" class="alert alert-info alert-soft">
+        {% heroicon_outline "information-circle" %}
+        <span>Você possui um e-mail pendente de verificação.</span>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        {% if current_emailaddress %}
+          <button class="btn btn-soft flex-1"
+                  type="submit"
+                  name="action_remove"
+                  form="pending-email">Cancelar alteração</button>
+        {% endif %}
+        <button class="btn flex-1 btn-primary"
+                type="submit"
+                name="action_send"
+                form="pending-email">Reenviar verificação</button>
+      </div>
+    {% endif %}
+    {% with email=form.email %}
+      <label class="floating-label">
+        <span>{{ email.label }}</span>
+        {{ email }}
+      </label>
+      {% if email.errors %}
+        {% for error in email.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="flex gap-2 flex-wrap">
+      <a class="btn btn-soft flex-1" href="{% url "users:settings" %}">Cancelar</a>
+      <button class="btn btn-primary flex-1" type="submit" name="action_add">Alterar e-mail</button>
+    </div>
+  </form>
+  {% if new_emailaddress %}
+    <form class="hidden"
+          id="pending-email"
+          method="post"
+          action="{% url 'account_email' %}">
+      {% csrf_token %}
+      <input type="hidden" name="email" value="{{ new_emailaddress.email }}">
+    </form>
+  {% endif %}
+{% endblock content %}

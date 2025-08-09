@@ -1,0 +1,40 @@
+{% extends "allauth/layouts/base.html" %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Bem-vindo(a) de volta</h1>
+    <p class="opacity-50">Insira as suas credenciais para entrar.</p>
+  </div>
+  <form action="{% url "account_login" %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.field.widget.input_type == "checkbox" %}
+        <div class="flex items-center gap-2 justify-between flex-wrap">
+          <label for="{{ field.id_for_label }}"
+                 class="cursor-pointer inline-flex items-center gap-2">
+            {{ field }}
+            <span class="text-sm">Manter sessão ativa</span>
+          </label>
+          <a class="text-sm link link-primary link-hover"
+             href="{% url "account_reset_password" %}">Redefinir senha</a>
+        </div>
+      {% else %}
+        <label class="floating-label">
+          <span>{{ field.label }}</span>
+          {{ field }}
+        </label>
+      {% endif %}
+    {% endfor %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <p role="alert" class="alert alert-error alert-soft">{{ error }}</p>
+      {% endfor %}
+    {% endif %}
+    <button class="btn btn-primary" type="submit">Entrar</button>
+  </form>
+  <p class="text-center text-sm">
+    Ainda não tem uma conta? <a href="{% url 'account_signup' %}"
+    class="link link-primary link-hover">Crie uma agora.</a>
+  </p>
+{% endblock content %}

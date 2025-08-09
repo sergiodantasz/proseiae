@@ -1,0 +1,31 @@
+{% extends "allauth/layouts/base.html" %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Exclusão de conta</h1>
+    <p class="opacity-50">Confirme abaixo para apagar a sua conta.</p>
+  </div>
+  <form action="{% url "users:delete" %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    <p>
+      Tem certeza de que deseja excluir sua conta? <span class="font-bold">Esta ação não poderá ser desfeita.</span>
+    </p>
+    {% with checkbox=form.confirm_delete %}
+      <div role="alert" class="alert">
+        <label for="{{ checkbox.id_for_label }}"
+               class="flex items-center gap-4 cursor-pointer">
+          {{ checkbox }}
+          <span>{{ checkbox.label }}</span>
+        </label>
+      </div>
+      {% if checkbox.errors %}
+        {% for error in checkbox.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="flex gap-2 flex-wrap">
+      <a class="btn btn-soft flex-1" href="{% url "users:settings" %}">Cancelar</a>
+      <button class="btn btn-error flex-1" type="submit">Apagar conta</button>
+    </div>
+  </form>
+{% endblock content %}

@@ -1,0 +1,122 @@
+{% extends "allauth/layouts/base.html" %}
+{% load avatar_tags heroicons %}
+{% block content %}
+  <div class="tabs tabs-box">
+    <input type="radio"
+           name="tabs"
+           class="tab"
+           aria-label="Informações pessoais"
+           checked />
+    <div class="tab-content bg-base-100 p-6 rounded-lg mt-1">
+      <div class="flex gap-10 flex-col md:flex-row">
+        <div class="avatar mx-auto md:mx-0">
+          <div class="size-52 rounded-full">
+            <img src="{% avatar_url user 208 %}" alt="User avatar" />
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 lg:flex-row lg:gap-10">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col w-max">
+              <span class="font-medium opacity-50">Primeiro nome</span>
+              {% if user.first_name %}
+                <span>{{ user.first_name }}</span>
+              {% else %}
+                <span>-</span>
+              {% endif %}
+            </div>
+            <div class="flex flex-col w-max">
+              <span class="font-medium opacity-50">Último nome</span>
+              {% if user.last_name %}
+                <span>{{ user.last_name }}</span>
+              {% else %}
+                <span>-</span>
+              {% endif %}
+            </div>
+            <div class="flex flex-col w-max">
+              <span class="font-medium opacity-50">Nome de usuário</span>
+              <span>@{{ user.username }}</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex flex-col">
+              <span class="font-medium opacity-50">Bio</span>
+              {% if user.profile.bio %}
+                <span>{{ user.profile.bio }}</span>
+              {% else %}
+                <span>-</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ml-auto w-fit mt-10">
+        <a href="{% url "users:profile_edit" %}" class="btn btn-primary">
+          {% heroicon_outline "pencil-square" %}
+          <span>Editar informações</span>
+        </a>
+      </div>
+    </div>
+    <input type="radio" name="tabs" class="tab" aria-label="Conta" />
+    <div class="tab-content bg-base-100 p-6 rounded-lg mt-1">
+      <div>
+        <div class="flex flex-col gap-10">
+          <div class="flex flex-col flex-1">
+            <div class="divider divider-start font-semibold mt-0">E-mail</div>
+            <div class="flex flex-col gap-4">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span>{{ user.email }}</span>
+                {% if user.emailaddress_set.first.verified %}
+                  {% include "account/partials/_badge-verified.html" %}
+                {% else %}
+                  {% include "account/partials/_badge-not-verified.html" %}
+                {% endif %}
+              </div>
+              {% if not user.emailaddress_set.first.verified %}
+                <div class="alert w-fit alert-info alert-soft">
+                  {% heroicon_outline "information-circle" %}
+                  <span>Acesse a página de alteração de e-mail caso deseje reenviar o e-mail de verificação.</span>
+                </div>
+              {% endif %}
+              <a href="{% url "account_email" %}" class="btn btn-primary w-fit">Alterar e-mail</a>
+            </div>
+          </div>
+          <div class="flex flex-col flex-1">
+            <div class="divider divider-start font-semibold mt-0">Senha</div>
+            <a class="btn btn-primary w-fit"
+               href="{% url "account_change_password" %}">Alterar senha</a>
+          </div>
+        </div>
+        <div class="ml-auto w-fit mt-10 flex gap-2">
+          <button class="btn btn-error btn-soft" onclick="logout_modal.showModal()">Sair</button>
+          <a href="{% url "users:delete" %}" class="btn btn-error">Deletar conta</a>
+        </div>
+      </div>
+    </div>
+    <input type="radio" name="tabs" class="tab" aria-label="Preferências" />
+    <div class="tab-content bg-base-100 p-6 rounded-lg mt-1">
+      <div>
+        <div class="flex flex-col gap-10">
+          <div class="flex flex-col flex-1">
+            <div class="divider divider-start font-semibold mt-0">Tema</div>
+            <div class="join w-fit">
+              <input type="radio"
+                     name="theme-buttons"
+                     class="btn theme-controller join-item"
+                     data-set-theme="emerald"
+                     data-act-class="act"
+                     aria-label="Emerald"
+                     value="emerald" />
+              <input type="radio"
+                     name="theme-buttons"
+                     class="btn theme-controller join-item"
+                     data-set-theme="night"
+                     data-act-class="act"
+                     aria-label="Night"
+                     value="night" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

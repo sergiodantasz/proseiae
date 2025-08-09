@@ -1,0 +1,38 @@
+{% extends "allauth/layouts/base.html" %}
+{% load static avatar_tags %}
+{% block content %}
+  <div class="flex flex-col gap-4 items-center">
+    <div class="avatar cursor-pointer" id="avatar">
+      <div class="size-52 rounded-full">
+        <img src="{% avatar_url user 208 %}" alt="User avatar" />
+      </div>
+    </div>
+    <form id="user-profile-form"
+          action="{% url "users:profile_edit" %}"
+          method="post"
+          enctype="multipart/form-data"
+          data-user-has-avatar="{% if form.avatar.value %}true{% else %}false{% endif %}"
+          class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+      {% csrf_token %}
+      {% for field in form %}
+        {% if field.field.widget.input_type == "file" %}
+          {{ field }}
+        {% elif field.name != "avatar_action" %}
+          <label class="floating-label">
+            <span>{{ field.label }}</span>
+            {{ field }}
+          </label>
+        {% endif %}
+        {% if field.errors %}
+          {% for error in field.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+        {% endif %}
+      {% endfor %}
+      <div class="flex gap-2 flex-wrap">
+        <a class="btn btn-soft flex-1" href="{% url "users:settings" %}">Cancelar</a>
+        <button class="btn btn-primary flex-1" type="submit">Salvar alterações</button>
+      </div>
+      {% include "account/partials/_avatar-action-modal.html" %}
+    </form>
+  </div>
+  <script src="{% static "account/js/avatar.js" %}"></script>
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% load message_tags %}
+<div class="toast z-50 duration-150 delay-0 animate-in fade-in zoom-in slide-in-from-bottom"
+     id="message-container">
+  {% for message in messages %}
+    <div class="alert {{ message.tags }}">
+      {% message_icon message.level %}
+      <span>{{ message }}</span>
+    </div>
+  {% endfor %}
+</div>

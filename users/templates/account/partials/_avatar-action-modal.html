@@ -1,0 +1,22 @@
+<dialog id="avatar_action_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Confirmar alteração</h3>
+    <div class="py-4">
+      <span>Você quer manter ou remover o avatar atual?</span>
+      <div class="alert w-fit mt-4">
+        {% for radio in form.avatar_action %}
+          <label class="flex gap-2 cursor-pointer items-center">
+            {{ radio.tag }}
+            <span class="label-text">{{ radio.choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn" id="cancel-avatar-action-btn" type="button">Cancelar</button>
+      </form>
+      <button id="confirm-avatar-action-btn" class="btn btn-primary" type="button">Salvar</button>
+    </div>
+  </div>
+</dialog>

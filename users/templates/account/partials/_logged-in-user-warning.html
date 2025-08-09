@@ -1,0 +1,5 @@
+{% load heroicons %}
+<div role="alert" class="alert w-fit mx-auto mb-8">
+  {% heroicon_outline "information-circle" class="stroke-info" %}
+  <span>Você já está logado como <span class="font-semibold">{{ user.profile.name }}</span>.</span>
+</div>

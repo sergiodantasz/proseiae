@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from django.contrib.messages import constants
 from environ import Env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,11 +19,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Project apps
+    "users",
     # django-cleanup
     "django_cleanup",
     # django-tailwind
     "tailwind",
     "theme",
+    # django-allauth
+    "allauth",
+    "allauth.account",
+    # heroicons
+    "heroicons",
 ]
 
 MIDDLEWARE = [
@@ -33,6 +41,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # django-allauth
+    "allauth.account.middleware.AccountMiddleware",
+    # Project middleware
+    "core.middleware.ThemeMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -50,8 +62,17 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "libraries": {
+                "message_tags": "core.templatetags.message_tags",
+            },
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    # django-allauth
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
@@ -95,3 +116,30 @@ if DEBUG:
     MIDDLEWARE.append("django_browser_reload.middleware.BrowserReloadMiddleware")
 
 TAILWIND_APP_NAME = "theme"
+
+MESSAGE_TAGS = {
+    constants.INFO: "alert-info",
+    constants.SUCCESS: "alert-success",
+    constants.WARNING: "alert-warning",
+    constants.ERROR: "alert-error",
+}
+
+# Change it
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+LOGOUT_REDIRECT_URL = "account_login"
+
+# django-allauth settings
+ACCOUNT_FORMS = {
+    "login": "users.forms.LoginForm",
+    "signup": "users.forms.SignupForm",
+    "reset_password": "users.forms.ResetPasswordForm",
+    "reset_password_from_key": "users.forms.ResetPasswordKeyForm",
+    "change_password": "users.forms.ChangePasswordForm",
+    "add_email": "users.forms.AddEmailForm",
+}
+ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*"]
+ACCOUNT_LOGIN_METHODS = ["email"]
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ProseiAê!] "
+ACCOUNT_EMAIL_NOTIFICATIONS = True
+ACCOUNT_CHANGE_EMAIL = True

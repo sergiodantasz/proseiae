@@ -1,4 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: emerald --default, night --prefersdark;
+}
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 @source "../../../**/*.{html,py,js}";
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+}
+
+@layer components {
+}

@@ -1,0 +1,18 @@
+<form id="logout-form"
+      method="post"
+      action="{% url 'account_logout' %}"
+      class="hidden">
+  {% csrf_token %}
+</form>
+<dialog id="logout_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Confirmar saída</h3>
+    <p class="py-4">Você tem certeza que deseja sair da sua conta?</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Cancelar</button>
+      </form>
+      <button class="btn btn-error" type="submit" form="logout-form">Sair</button>
+    </div>
+  </div>
+</dialog>

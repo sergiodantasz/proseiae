@@ -13,6 +13,7 @@ dependencies = [
     "pillow (>=11.3.0,<12.0.0)",
     "django-cleanup (>=9.0.0,<10.0.0)",
     "django-allauth (>=65.10.0,<66.0.0)",
+    "heroicons[django] (>=2.11.0,<3.0.0)",
 ]
 
 [project.urls]
@@ -27,6 +28,7 @@ python = "^3.13"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.12.7"
 django-browser-reload = "^1.18.0"
+djlint = "^1.36.4"
 
 [tool.ruff]
 target-version = "py313"
