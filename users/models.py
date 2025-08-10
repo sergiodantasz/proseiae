@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from core.middleware import get_current_theme
+from core.middleware import get_current_theme_colors
 
 
 class Profile(models.Model):
@@ -19,9 +19,5 @@ class Profile(models.Model):
     def get_avatar_url(self, size):
         if self.avatar:
             return self.avatar.url
-        theme_colors = {
-            "emerald": ("66cc8a", "223d30"),
-            "night": ("3abdf8", "010d15"),
-        }
-        bg, color = theme_colors.get(get_current_theme(), theme_colors["emerald"])
+        bg, color = get_current_theme_colors()
         return f"https://ui-avatars.com/api/?background={bg}&color={color}&size={size}&name={self.name}"
