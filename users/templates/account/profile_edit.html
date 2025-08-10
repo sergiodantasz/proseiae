@@ -2,11 +2,7 @@
 {% load static avatar_tags %}
 {% block content %}
   <div class="flex flex-col gap-4 items-center">
-    <div class="avatar cursor-pointer" id="avatar">
-      <div class="size-52 rounded-full">
-        <img src="{% avatar_url user 208 %}" alt="User avatar" />
-      </div>
-    </div>
+    {% include "account/partials/_avatar.html" with request_user=user avatar_size=208 extra_classes="cursor-pointer" extra_attrs="id=\"avatar\"" %}
     <form id="user-profile-form"
           action="{% url "users:profile_edit" %}"
           method="post"

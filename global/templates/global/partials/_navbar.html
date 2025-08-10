@@ -55,11 +55,7 @@
           <div tabindex="0"
                role="button"
                class="flex items-center justify-center gap-2 btn btn-link underline-offset-2 hover:underline-offset-4 transition-all p-0 border-none">
-            <div class="size-10 avatar">
-              <div class="rounded-full">
-                <img alt="User avatar" src="{% avatar_url user %}" />
-              </div>
-            </div>
+            {% include "account/partials/_avatar.html" with request_user=user avatar_size=40 %}
             <span class="text-base-content">{{ user.profile.name }}</span>
           </div>
           <ul tabindex="0"

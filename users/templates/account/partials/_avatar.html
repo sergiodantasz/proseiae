@@ -1,0 +1,8 @@
+{% load avatar_tags math_filters %}
+<div class="avatar size-{{ avatar_size|floor_div:4 }} {{ extra_classes|default:"" }}"
+     {{ extra_attrs|default:""|safe }}>
+  <div class="rounded-full">
+    <img alt="User avatar"
+         src="{% avatar_url request_user size=avatar_size %}" />
+  </div>
+</div>
