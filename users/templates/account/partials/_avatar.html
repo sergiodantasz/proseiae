@@ -8,6 +8,6 @@
      {{ extra_attrs|default:""|safe }}>
   <div class="rounded-full">
     <img alt="User avatar"
-         src="{% avatar_url user=request_user size=avatar_size %}" />
+         src="{% avatar_url user=request_user size=avatar_size theme=theme %}" />
   </div>
 </div>

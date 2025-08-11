@@ -47,8 +47,6 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     # django-htmx
     "django_htmx.middleware.HtmxMiddleware",
-    # Project middleware
-    "core.middleware.ThemeMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -65,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.theme",
             ],
             "libraries": {
                 "message_tags": "core.templatetags.message_tags",
