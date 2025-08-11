@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Project apps
+    "home",
     "users",
     # django-cleanup
     "django_cleanup",
@@ -127,10 +128,8 @@ MESSAGE_TAGS = {
     constants.ERROR: "alert-error",
 }
 
-# Change it
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-LOGOUT_REDIRECT_URL = "account_login"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # django-allauth settings
 ACCOUNT_FORMS = {

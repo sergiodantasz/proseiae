@@ -1,0 +1,78 @@
+{% extends "allauth/layouts/base.html" %}
+{% load static heroicons %}
+{% block content %}
+  <div class="hero rounded-lg bg-cover bg-center transition-transform duration-300 ease-in-out hover:scale-[102.5%]"
+       style="background-image: url({% static "home/img/hero-background.jpg" %})">
+    <div class="hero-overlay rounded-lg"></div>
+    <div class="hero-content text-center py-6 text-neutral-content">
+      <div class="max-w-xl">
+        <h1 class="text-3xl font-bold">
+          Bem-vindo(a) ao <span class="underline decoration-primary">ProseiAê!</span>
+        </h1>
+        <p class="mt-6">
+          Converse com pessoas ao redor do mundo, compartilhe suas ideias e faça novas amizades. Tudo isso de forma simples, rápida e segura.
+        </p>
+        <div class="badge badge-primary indicator mt-6">5 usuários online</div> <!-- Change -->
+      </div>
+    </div>
+  </div>
+  <div class="mt-8">
+    {% if user.is_authenticated %}
+      <div class="flex flex-col items-center gap-4">
+        <h3 class="text-xl font-bold text-center">Olá, {{ user.profile.name }}!</h3>
+        <div class="w-20 h-0.5 bg-primary rounded-full"></div>
+        <div class="alert w-fit mx-auto">
+          <p class="text-center">
+            Você está logado como <span class="font-semibold">{{ user.username }}</span>. Aproveite para explorar as funcionalidades do ProseiAê!
+          </p>
+        </div>
+        <div class="flex gap-2 w-full flex-col md:flex-row">
+          <div class="card card-border bg-base-100 flex-1 border-primary">
+            <div class="card-body">
+              <h2 class="card-title">
+                {% heroicon_solid "globe-alt" %}
+                Chat Geral
+              </h2>
+              <p>Explore o chat geral e converse com outros usuários globalmente.</p>
+              <div class="card-actions justify-end">
+                <a href="" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
+              </div>
+            </div>
+          </div>
+          <div class="card card-border bg-base-100 flex-1 border-primary">
+            <div class="card-body">
+              <h2 class="card-title">
+                {% heroicon_solid "lock-closed" %}
+                Chat Privado
+              </h2>
+              <p>Converse em particular, sem que outras pessoas vejam.</p>
+              <div class="card-actions justify-end">
+                <a href="" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
+              </div>
+            </div>
+          </div>
+          <div class="card card-border bg-base-100 flex-1 border-primary">
+            <div class="card-body">
+              <h2 class="card-title">
+                {% heroicon_solid "user-group" %}
+                Chat em Grupo
+              </h2>
+              <p>Crie um bate-papo e convide outras pessoas para participarem.</p>
+              <div class="card-actions justify-end">
+                <a href="" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="flex flex-col items-center gap-4">
+        <h3 class="text-xl font-bold text-center">Olá, visitante!</h3>
+        <div class="w-20 h-0.5 bg-primary rounded-full"></div>
+        <div class="alert w-fit mx-auto">
+          <p class="text-center">Você não está logado. Entre ou crie uma conta para acessar as funcionalidades do ProseiAê!</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock content %}
