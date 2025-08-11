@@ -14,6 +14,7 @@ dependencies = [
     "django-cleanup (>=9.0.0,<10.0.0)",
     "django-allauth (>=65.10.0,<66.0.0)",
     "heroicons[django] (>=2.11.0,<3.0.0)",
+    "django-htmx (>=1.23.2,<2.0.0)",
 ]
 
 [project.urls]

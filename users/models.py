@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from core.middleware import get_current_theme
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -16,12 +14,12 @@ class Profile(models.Model):
     def name(self):
         return self.user.get_full_name().strip() or self.user.username
 
-    def get_avatar_url(self, size):
+    def get_avatar_url(self, size, theme="emerald"):
         if self.avatar:
             return self.avatar.url
         theme_colors = {
             "emerald": ("66cc8a", "223d30"),
             "night": ("3abdf8", "010d15"),
         }
-        bg, color = theme_colors.get(get_current_theme(), theme_colors["emerald"])
+        bg, color = theme_colors.get(theme, theme_colors["emerald"])
         return f"https://ui-avatars.com/api/?background={bg}&color={color}&size={size}&name={self.name}"

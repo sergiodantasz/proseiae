@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "allauth.account",
     # heroicons
     "heroicons",
+    # django-htmx
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -43,8 +45,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # django-allauth
     "allauth.account.middleware.AccountMiddleware",
-    # Project middleware
-    "core.middleware.ThemeMiddleware",
+    # django-htmx
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -61,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.theme",
             ],
             "libraries": {
                 "message_tags": "core.templatetags.message_tags",
