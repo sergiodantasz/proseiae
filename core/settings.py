@@ -68,7 +68,6 @@ TEMPLATES = [
             ],
             "libraries": {
                 "message_tags": "core.templatetags.message_tags",
-                "math_filters": "core.templatetags.math_filters",
             },
         },
     },

@@ -90,9 +90,9 @@ class AddEmailForm(
 
 class UserProfileForm(CssClassMixin, PlaceholderMixin, LabelMixin, forms.ModelForm):
     avatar_action = forms.ChoiceField(
-        choices=[("manter", "Manter"), ("remover", "Remover")],
+        choices=[("keep", "Manter"), ("remove", "Remover")],
         widget=forms.RadioSelect,
-        initial="manter",
+        initial="keep",
     )
     first_name = forms.CharField(required=False, label="Primeiro nome")
     last_name = forms.CharField(required=False, label="Último nome")

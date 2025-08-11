@@ -1,8 +1,13 @@
-{% load avatar_tags math_filters %}
-<div class="avatar size-{{ avatar_size|floor_div:4 }} {{ extra_classes|default:"" }}"
+{% load avatar_tags %}
+<div hx-get="{% url 'users:avatar_partial' %}?avatar_size={{ avatar_size }}&extra_classes={{ extra_classes|default:""|urlencode }}&extra_attrs={{ extra_attrs|default:""|urlencode }}"
+     hx-trigger="themeChanged from:body"
+     hx-swap="outerHTML"
+     class="avatar {{ extra_classes|default:"" }}"
+     style="max-width: {{ avatar_size }}px;
+            max-height: {{ avatar_size }}px"
      {{ extra_attrs|default:""|safe }}>
   <div class="rounded-full">
     <img alt="User avatar"
-         src="{% avatar_url request_user size=avatar_size %}" />
+         src="{% avatar_url user=request_user size=avatar_size %}" />
   </div>
 </div>
