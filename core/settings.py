@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     # Project apps
     "home",
     "users",
+    "chat",
     # django-cleanup
     "django_cleanup",
     # django-tailwind
