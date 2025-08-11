@@ -7,7 +7,7 @@ function setTheme(theme) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme") || "emerald";
+  let savedTheme = localStorage.getItem("theme") || "emerald";
 
   if (!validThemes.includes(savedTheme)) {
     savedTheme = "emerald";
