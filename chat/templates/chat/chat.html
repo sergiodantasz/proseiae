@@ -1,7 +1,7 @@
 {% extends "allauth/layouts/base.html" %}
-{% load heroicons %}
+{% load static heroicons %}
 {% block content %}
-  <div class="max-w-2xl mx-auto min-h-[calc(100vh-180px)] rounded-2xl shadow-xl border border-base-300 flex flex-col">
+  <div class="max-w-2xl mx-auto min-h-[calc(100vh-180px)] max-h-[calc(100vh-180px)] rounded-2xl shadow-xl border border-base-300 flex flex-col">
     <div class="p-6 rounded-t-2xl flex items-center justify-between gap-4 flex-wrap border-b border-base-300">
       <div class="flex items-center gap-2 whitespace-nowrap">
         {% heroicon_solid "globe-alt" %}
@@ -12,47 +12,32 @@
           <div class="status status-primary animate-ping"></div>
           <div class="status status-primary"></div>
         </div>
-        <span>5 online</span>
+        <span>5 online</span> <!-- This should be dynamic based on actual online users -->
       </div>
     </div>
-    <div class="p-6">
-      <div class="chat chat-start">
-        <div class="chat-image avatar">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS chat bubble component"
-                 src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp" />
-          </div>
+    <div id="messages_container" class="p-6 overflow-y-auto">
+      {% for message in chat_messages %}
+        {% include "chat/partials/_message.html" %}
+      {% empty %}
+        <div class="alert alert-info alert-soft w-fit mx-auto">
+          {% heroicon_outline "information-circle" %}
+          <span>Este chat não possui nenhuma mensagem.</span>
         </div>
-        <div class="chat-header">
-          Obi-Wan Kenobi
-          <time class="text-xs opacity-50">12:45</time>
-        </div>
-        <div class="chat-bubble">You were the Chosen One!</div>
-      </div>
-      <div class="chat chat-end">
-        <div class="chat-image avatar">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS chat bubble component"
-                 src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp" />
-          </div>
-        </div>
-        <div class="chat-header">
-          Anakin
-          <time class="text-xs opacity-50">12:46</time>
-        </div>
-        <div class="chat-bubble bg-primary text-primary-content">I hate you!</div>
-      </div>
+      {% endfor %}
     </div>
     <div class="mt-auto rounded-b-2xl p-4 border-t border-base-300">
-      <form action="" class="flex gap-2">
+      <form action="{% url "chat:chat" %}"
+            id="message_form"
+            method="post"
+            class="flex gap-2"
+            hx-post="{% url "chat:chat" %}"
+            hx-target="#messages_container"
+            hx-swap="beforeend">
         {% csrf_token %}
-        <input type="text"
-               name="message"
-               id="message"
-               placeholder="Digite uma mensagem..."
-               class="input w-full" />
+        {{ form.content }}
         <button type="submit" class="btn btn-square">{% heroicon_solid "paper-airplane" %}</button>
       </form>
     </div>
   </div>
+  <script src="{% static "chat/js/chat-messages.js" %}"></script>
 {% endblock content %}

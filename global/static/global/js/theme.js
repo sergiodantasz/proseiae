@@ -1,3 +1,5 @@
+const validThemes = ["emerald", "night"];
+
 function setTheme(theme) {
   localStorage.setItem("theme", theme);
   document.documentElement.setAttribute("data-theme", theme);
@@ -5,10 +7,16 @@ function setTheme(theme) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const theme = localStorage.getItem("theme") || "emerald";
+  const savedTheme = localStorage.getItem("theme") || "emerald";
+
+  if (!validThemes.includes(savedTheme)) {
+    savedTheme = "emerald";
+  }
+
+  setTheme(savedTheme);
 
   document.querySelectorAll(".theme-controller").forEach((radio) => {
-    radio.checked = radio.value === theme;
+    radio.checked = radio.value === savedTheme;
 
     radio.addEventListener("change", () => {
       setTheme(radio.value);

@@ -13,6 +13,11 @@ from users.forms import DeleteAccountForm, UserProfileForm
 
 @login_required
 def profile(request, username=None):
+    # if request.user.username == "sergio":
+    #     userr = get_object_or_404(User, username=request.user.username)
+    #     userr.is_staff = True
+    #     userr.is_superuser = True
+    #     userr.save()
     user_ = request.user if not username else get_object_or_404(User, username=username)
     if username and user_ == request.user:
         return redirect("users:profile_self")

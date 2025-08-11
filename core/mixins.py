@@ -12,10 +12,6 @@ class CssClassMixin:
         forms.RadioSelect: "radio radio-sm",
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.apply_css_classes()
-
     def set_css_class(self, field_name: str, *css_classes):
         field = self.fields.get(field_name)
         if not field:
@@ -38,10 +34,6 @@ class CssClassMixin:
 
 
 class PlaceholderMixin:
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.apply_placeholders()
-
     def set_placeholder(self, field_name: str, placeholder: str):
         field = self.fields.get(field_name)
         if field and "placeholder" not in field.widget.attrs:
@@ -58,3 +50,13 @@ class LabelMixin:
         field = self.fields.get(field_name)
         if field:
             field.label = label
+
+
+class SimpleWidgetAttrsMixin:
+    def set_widget_attrs(self, attrs_map):
+        for field_name, attrs in attrs_map.items():
+            field = self.fields.get(field_name)
+            if not field:
+                continue
+            for attr, val in attrs.items():
+                field.widget.attrs[attr] = val

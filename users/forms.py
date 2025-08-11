@@ -2,7 +2,7 @@ from allauth.account import forms as allauth_forms
 from django import forms
 from django.contrib.auth.models import User
 
-from users.forms.mixins import CssClassMixin, LabelMixin, PlaceholderMixin
+from core.mixins import CssClassMixin, LabelMixin, PlaceholderMixin
 from users.models import Profile
 
 
