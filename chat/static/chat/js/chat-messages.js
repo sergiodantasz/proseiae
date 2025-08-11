@@ -15,8 +15,12 @@ if (form) {
   });
 }
 
-document.body.addEventListener("htmx:afterSwap", function (e) {
+document.body.addEventListener("htmx:afterSwap", (e) => {
   if (e.detail.target.id === "messages_container") {
+    const emptyChatAlert = document.getElementById("empty_chat_alert");
+    if (emptyChatAlert) {
+      emptyChatAlert.remove();
+    }
     scrollToBottom();
   }
 });

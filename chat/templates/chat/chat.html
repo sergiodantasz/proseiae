@@ -19,7 +19,7 @@
       {% for message in chat_messages %}
         {% include "chat/partials/_message.html" %}
       {% empty %}
-        <div class="alert alert-info alert-soft w-fit mx-auto">
+        <div id="empty_chat_alert" class="alert alert-info alert-soft w-fit mx-auto">
           {% heroicon_outline "information-circle" %}
           <span>Este chat não possui nenhuma mensagem.</span>
         </div>
