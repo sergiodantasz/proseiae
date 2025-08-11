@@ -65,7 +65,11 @@ class PasswordChangeView(AllauthPasswordChangeView):
 def avatar_partial(request):
     if request.headers.get("HX-Request") != "true":
         raise Http404()
-    avatar_size = int(request.GET.get("avatar_size", 64))
+    avatar_size = request.GET.get("avatar_size", 64)
+    try:
+        avatar_size = int(avatar_size)
+    except (ValueError, TypeError):
+        avatar_size = 64
     extra_classes = request.GET.get("extra_classes", "")
     extra_attrs = uri_to_iri(request.GET.get("extra_attrs", ""))
     return render(
