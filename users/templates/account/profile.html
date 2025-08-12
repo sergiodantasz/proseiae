@@ -1,5 +1,4 @@
 {% extends "allauth/layouts/base.html" %}
-{% load avatar_tags %}
 {% block content %}
   <div class="flex flex-col gap-4 items-center">
     {% include "account/partials/_avatar.html" with request_user=user_ avatar_size=208 %}

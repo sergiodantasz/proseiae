@@ -1,7 +1,7 @@
 function scrollToBottom() {
-  const container = document.getElementById("messages_container");
-  if (container) {
-    container.scrollTop = container.scrollHeight;
+  const messagesContainer = document.getElementById("messages_container");
+  if (messagesContainer) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 }
 
@@ -10,17 +10,15 @@ scrollToBottom();
 const form = document.getElementById("message_form");
 
 if (form) {
-  form.addEventListener("htmx:beforeSend", function () {
+  form.addEventListener("htmx:wsAfterSend", function () {
     this.reset();
   });
 }
 
-document.body.addEventListener("htmx:afterSwap", (e) => {
-  if (e.detail.target.id === "messages_container") {
-    const emptyChatAlert = document.getElementById("empty_chat_alert");
-    if (emptyChatAlert) {
-      emptyChatAlert.remove();
-    }
-    scrollToBottom();
+document.body.addEventListener("htmx:wsAfterMessage", (e) => {
+  const emptyChatAlert = document.getElementById("empty_chat_alert");
+  if (emptyChatAlert) {
+    emptyChatAlert.remove();
   }
+  scrollToBottom();
 });

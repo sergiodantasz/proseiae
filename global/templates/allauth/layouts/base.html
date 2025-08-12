@@ -1,15 +1,13 @@
 {% load static tailwind_tags django_htmx %}
 <!DOCTYPE html>
-<html lang="pt-BR"
-      class="font-inter"
-      data-theme="{{ request.COOKIES.theme|default:'emerald' }}">
+<html lang="pt-BR" class="font-inter" data-theme="night">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProseiAê!</title>
     {% tailwind_css %}
-    <script src="{% static "global/js/theme.js" %}"></script>
     {% htmx_script %}
+    <script src="{% static "global/js/ext/htmx-ext-ws.min.js" %}" defer></script>
     {% block extra_head %}{% endblock extra_head %}
   </head>
   <body class="min-h-dvh flex flex-col"
@@ -28,7 +26,6 @@
     {% if messages %}
       <script src="{% static "global/js/messages.js" %}"></script>
     {% endif %}
-    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
     {% block extra_body %}{% endblock extra_body %}
   </body>
 </html>

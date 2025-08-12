@@ -6,8 +6,8 @@ from chat.models import Chat
 
 
 @login_required
-def chat(request):
-    chat = get_object_or_404(Chat, identifier="public")  # Change it
+def chat(request, identifier):
+    chat = get_object_or_404(Chat, identifier=identifier)
     form = MessageForm(request.POST or None)
     if request.method == "POST" and request.htmx and form.is_valid():
         message = form.save(commit=False)

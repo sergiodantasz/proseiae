@@ -36,7 +36,7 @@ class Chat(models.Model):
     )
 
     def __str__(self):
-        return self.name or str(self.identifier)
+        return self.name or f"Chat {self.identifier}"
 
 
 class Message(models.Model):
