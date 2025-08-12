@@ -16,9 +16,12 @@ if (form) {
 }
 
 document.body.addEventListener("htmx:wsAfterMessage", (e) => {
-  const emptyChatAlert = document.getElementById("empty_chat_alert");
-  if (emptyChatAlert) {
-    emptyChatAlert.remove();
+  const message = e.detail.message || "";
+  if (message.includes('id="messages_container"')) {
+    const emptyChatAlert = document.getElementById("empty_chat_alert");
+    if (emptyChatAlert) {
+      emptyChatAlert.remove();
+    }
+    scrollToBottom();
   }
-  scrollToBottom();
 });
