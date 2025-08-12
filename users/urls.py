@@ -15,5 +15,4 @@ urlpatterns = [
         views.PasswordChangeView.as_view(),
         name="account_change_password",
     ),
-    path("avatar/partial/", views.avatar_partial, name="avatar_partial"),
 ]

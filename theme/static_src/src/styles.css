@@ -2,11 +2,9 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: emerald --default, night --prefersdark;
+  themes: night --default;
 }
 @plugin "tailwindcss-animate";
-
-@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 @source "../../../**/*.{html,py,js}";
 

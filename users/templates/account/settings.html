@@ -1,5 +1,5 @@
 {% extends "allauth/layouts/base.html" %}
-{% load avatar_tags heroicons %}
+{% load heroicons %}
 {% block content %}
   <div class="tabs tabs-box">
     <input type="radio"
@@ -85,32 +85,6 @@
         <div class="ml-auto w-fit mt-10 flex gap-2">
           <button class="btn btn-error btn-soft" onclick="logout_modal.showModal()">Sair</button>
           <a href="{% url "users:delete" %}" class="btn btn-error">Deletar conta</a>
-        </div>
-      </div>
-    </div>
-    <input type="radio" name="tabs" class="tab" aria-label="Preferências" />
-    <div class="tab-content bg-base-100 p-6 rounded-lg mt-1">
-      <div>
-        <div class="flex flex-col gap-10">
-          <div class="flex flex-col flex-1">
-            <div class="divider divider-start font-semibold mt-0">Tema</div>
-            <div class="join w-fit">
-              <input type="radio"
-                     name="theme-buttons"
-                     class="btn theme-controller join-item"
-                     data-set-theme="emerald"
-                     data-act-class="act"
-                     aria-label="Emerald"
-                     value="emerald" />
-              <input type="radio"
-                     name="theme-buttons"
-                     class="btn theme-controller join-item"
-                     data-set-theme="night"
-                     data-act-class="act"
-                     aria-label="Night"
-                     value="night" />
-            </div>
-          </div>
         </div>
       </div>
     </div>
