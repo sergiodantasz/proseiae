@@ -1,0 +1,20 @@
+{% if is_user_online %}
+  <div id="online_user_status"
+       class="badge badge-soft badge-success whitespace-nowrap animate-in fade-in duration-1000"
+       hx-swap-oob="outerHTML">
+    <div class="inline-grid *:[grid-area:1/1]">
+      <div class="status status-success animate-ping"></div>
+      <div class="status status-success"></div>
+    </div>
+    <div>
+      <span>Online</span>
+    </div>
+  </div>
+{% else %}
+  <div id="online_user_status"
+       class="badge badge-soft whitespace-nowrap animate-in fade-in duration-1000"
+       hx-swap-oob="outerHTML">
+    <div class="status"></div>
+    <span class="opacity-50">Offline</span>
+  </div>
+{% endif %}

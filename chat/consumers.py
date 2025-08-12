@@ -16,7 +16,7 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(self.identifier, self.channel_name)
         if self.user not in self.chat.online_users.all():
             self.chat.online_users.add(self.user)
-            self.update_online_users_count()
+            self.update_online()
         self.accept()
 
     def disconnect(self, close_code):
@@ -25,7 +25,7 @@ class ChatConsumer(WebsocketConsumer):
         )
         if self.user in self.chat.online_users.all():
             self.chat.online_users.remove(self.user)
-            self.update_online_users_count()
+            self.update_online()
 
     def receive(self, text_data):
         text_data_json = loads(text_data)
@@ -51,12 +51,18 @@ class ChatConsumer(WebsocketConsumer):
         html = render_to_string("chat/partials/_message-ws.html", context)
         self.send(text_data=html)
 
-    def update_online_users_count(self):
+    def update_online(self):
         online_users_count = self.chat.online_users.count()
-        event = {
-            "type": "online_users_count_handler",
-            "online_users_count": online_users_count,
-        }
+        if self.chat.chat_type == "private":
+            event = {
+                "type": "online_user_status_handler",
+                "is_user_online": online_users_count == 2,
+            }
+        else:
+            event = {
+                "type": "online_users_count_handler",
+                "online_users_count": online_users_count,
+            }
         async_to_sync(self.channel_layer.group_send)(self.identifier, event)
 
     def online_users_count_handler(self, event):
@@ -65,4 +71,12 @@ class ChatConsumer(WebsocketConsumer):
             "online_users_count": online_users_count,
         }
         html = render_to_string("chat/partials/_online-users-count.html", context)
+        self.send(text_data=html)
+
+    def online_user_status_handler(self, event):
+        is_user_online = event["is_user_online"]
+        context = {
+            "is_user_online": is_user_online,
+        }
+        html = render_to_string("chat/partials/_online-user-status.html", context)
         self.send(text_data=html)

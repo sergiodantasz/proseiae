@@ -1,17 +1,25 @@
 {% extends "allauth/layouts/base.html" %}
+{% load heroicons %}
 {% block content %}
   <div class="flex flex-col gap-4 items-center">
-    {% include "account/partials/_avatar.html" with request_user=user_ avatar_size=208 %}
+    {% include "account/partials/_avatar.html" with request_user=profile.user avatar_size=208 %}
     <div class="flex flex-col items-center">
-      <span class="font-bold text-2xl">{{ user_.profile.name }}</span>
-      <span class="text-primary text-sm">@{{ user_.username }}</span>
+      <span class="font-bold text-2xl">{{ profile.name }}</span>
+      <span class="text-primary text-sm">@{{ profile.user.username }}</span>
     </div>
     <div class="text-center max-w-2xl">
-      {% if user_.profile.bio %}
-        <p>{{ user_.profile.bio }}</p>
+      {% if profile.bio %}
+        <p>{{ profile.bio }}</p>
       {% else %}
         <p class="opacity-50">Sem biografia disponível.</p>
       {% endif %}
     </div>
+    {% if user != profile.user %}
+      <a href="{% url "chat:chat_user" profile.user.username %}"
+         class="btn btn-soft">
+        {% heroicon_outline "chat-bubble-bottom-center-text" %}
+        <span>Conversar</span>
+      </a>
+    {% endif %}
   </div>
 {% endblock content %}
