@@ -13,7 +13,7 @@
           </div>
         </a>
         <div id="online_user_status" class="hidden"></div>
-      {% elif chat.chat_type = "group" %}
+      {% elif chat.chat_type == "group" %}
       {% else %}
         <div class="flex items-center gap-2 whitespace-nowrap mr-auto">
           {% heroicon_solid "globe-alt" %}
