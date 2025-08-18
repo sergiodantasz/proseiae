@@ -23,7 +23,7 @@ class Chat(models.Model):
     name = models.CharField(
         max_length=50,
         blank=True,
-        null=True,
+        default="",
     )
     owner = models.ForeignKey(
         User,
@@ -44,7 +44,7 @@ class Chat(models.Model):
     chat_type = models.CharField(
         max_length=10,
         choices=CHAT_TYPE_CHOICES,
-        default=GENERAL,
+        default=GROUP,
     )
 
     def __str__(self):
@@ -55,7 +55,7 @@ class Chat(models.Model):
         if not cls.objects.filter(identifier=cls.GENERAL).exists():
             cls.objects.create(
                 identifier=cls.GENERAL,
-                name=cls.GENERAL,
+                name="Chat Geral",
                 chat_type=cls.GENERAL,
             )
 

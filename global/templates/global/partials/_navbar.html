@@ -1,14 +1,26 @@
 {% load heroicons %}
-<nav class="navbar border-b border-b-base-300 px-0">
+<nav class="navbar border-b border-b-base-300 px-0"
+     hx-ext="ws"
+     ws-connect="/ws/online/"
+     hx-trigger="every 15s"
+     hx-vals='{"type": "heartbeat"}'>
   <div class="max-w-[1280px] mx-auto flex items-center justify-between px-4 w-full gap-4">
-    <div class="flex-1">
+    <div class="flex-1 flex items-center gap-4">
       <a href="{% url "home:home" %}" class="text-xl font-bold">ProseiAê!</a>
+      <div id="global_online_count" class="hidden"></div>
     </div>
+    <!-- Mobile -->
     <div class="dropdown dropdown-end sm:hidden">
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle">{% heroicon_outline "bars-3" %}</div>
       <ul tabindex="0"
           class="menu menu-md dropdown-content bg-base-100 border border-base-300 p-1 rounded-xl z-1 mt-3 w-fit [&_a]:whitespace-nowrap">
         {% if user.is_authenticated %}
+          <li>
+            <a href="{% url "chat:chat_home" %}">
+              {% heroicon_outline "chat-bubble-left-right" %}
+              <span>Chats</span>
+            </a>
+          </li>
           <li>
             <a href="{% url "users:profile_self" %}">
               {% heroicon_outline "user-circle" %}
@@ -43,12 +55,13 @@
         {% endif %}
       </ul>
     </div>
+    <!-- Desktop -->
     <div class="hidden sm:flex items-center gap-4">
       {% if user.is_authenticated %}
         <div>
-          <a href="" class="btn btn-ghost"> <!-- Change href -->
+          <a href="{% url "chat:chat_home" %}" class="btn btn-ghost">
             {% heroicon_outline "chat-bubble-left-right" %}
-            <span>Conversas</span>
+            <span>Chats</span>
           </a>
         </div>
         <div class="dropdown dropdown-end">

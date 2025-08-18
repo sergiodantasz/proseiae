@@ -1,0 +1,148 @@
+{% extends "allauth/layouts/base.html" %}
+{% load static heroicons chat_tags %}
+{% block content %}
+  <div class="flex gap-4 flex-col lg:flex-row"
+       hx-ext="ws"
+       ws-connect="/ws/home/">
+    <div class="card flex-1 bg-base-200 h-fit">
+      <figure class="max-h-50 relative">
+        <img src="{% static "chat/img/global-chat-background.jpg" %}" alt="">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+      </figure>
+      <div class="card-body text-base gap-4">
+        <h2 class="card-title flex gap-2 items-start justify-between flex-wrap">
+          <div class="flex flex-col items-start gap-2">
+            {% heroicon_solid "globe-alt" size=40 class="-ml-1" %}
+            <span class="text-xl">Chat Geral</span>
+          </div>
+          <div id="general_online_count" class="hidden"></div>
+        </h2>
+        <p>
+          Entre no chat geral para trocar ideias, fazer novas conexões e conversar com usuários de todo o mundo em um espaço aberto e dinâmico.
+        </p>
+        <div class="card-actions">
+          <a href="{% url "chat:chat" "general" %}" class="btn btn-primary w-full">Acessar o chat geral</a>
+        </div>
+      </div>
+    </div>
+    <div class="card flex-1 bg-base-200 h-fit">
+      <figure class="max-h-50 relative">
+        <img src="{% static "chat/img/private-chat-background.jpg" %}" alt="">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+      </figure>
+      <div class="card-body text-base gap-4">
+        <h2 class="card-title flex flex-col items-start">
+          {% heroicon_solid "lock-closed" size=40 class="-ml-1" %}
+          Chat Privado
+        </h2>
+        <p>Tenha conversas privadas e seguras com outro usuário, trocando mensagens de forma direta e confidencial.</p>
+        <div class="flex gap-2 flex-wrap">
+          <div class="flex flex-col gap-4 bg-base-100 rounded-2xl p-4 h-fit flex-1 basis-2xs border border-base-content/10">
+            <span class="font-medium">Usuários que você já conversou:</span>
+            {% if private_chats.exists %}
+              <div id="private_chats"
+                   class="bg-base-200 rounded-box flex flex-col gap-2 p-2">
+                {% for chat in private_chats.all %}
+                  {% with other_user=chat|other_user:user %}
+                    <a href="{% url "chat:chat" chat.identifier %}"
+                       class="grid grid-cols-[max-content_1fr] gap-2 items-center p-2 rounded-lg transition-all hover:bg-base-content/10">
+                      {% include "account/partials/_avatar.html" with request_user=other_user avatar_size=30 %}
+                      <div class="flex items-center gap-1 min-w-0">
+                        <div class="font-medium text-sm truncate">{{ other_user.profile.name }}</div>
+                        <span class="text-sm opacity-50">@{{ other_user.username }}</span>
+                      </div>
+                    </a>
+                  {% endwith %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-info alert-soft">
+                {% heroicon_outline "information-circle" %}
+                <span>Você ainda não iniciou nenhum chat privado.</span>
+              </div>
+            {% endif %}
+          </div>
+          <form class="flex flex-col gap-4 bg-base-100 rounded-2xl p-4 h-fit flex-1 basis-2xs border border-base-content/10"
+                action="{% url "chat:chat_home" %}"
+                method="post">
+            {% csrf_token %}
+            <span class="font-medium">Iniciar chat com:</span>
+            <label class="input w-full" for="id_username">
+              {% heroicon_outline "user" size=20 class="opacity-50" %}
+              <input type="text"
+                     name="username"
+                     id="id_username"
+                     placeholder="Digite o nome de usuário..."
+                     maxlength="150"
+                     required>
+            </label>
+            <button type="submit" class="btn btn-primary">Iniciar chat privado</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card flex-1 bg-base-200 h-fit">
+      <figure class="max-h-50 relative">
+        <img src="{% static "chat/img/group-chat-background.jpg" %}" alt="">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+      </figure>
+      <div class="card-body text-base gap-4">
+        <h2 class="card-title flex flex-col items-start">
+          {% heroicon_solid "user-group" size=40 class="-ml-1" %}
+          Chat em Grupo
+        </h2>
+        <p>
+          Participe de um chat em grupo, reúna amigos ou colegas e mantenham todas as conversas organizadas em um só lugar.
+        </p>
+        <div class="flex gap-2 flex-wrap">
+          <div class="flex flex-col gap-4 bg-base-100 rounded-2xl p-4 h-fit flex-1 basis-2xs border border-base-content/10">
+            <span class="font-medium">Grupos que você faz parte:</span>
+            {% if group_chats.exists %}
+              <div id="group_chats"
+                   class="bg-base-200 rounded-box flex flex-col gap-2 p-2">
+                {% for chat in group_chats.all %}
+                  <a href="{% url "chat:chat" chat.identifier %}"
+                     class="p-2 rounded-lg transition-all hover:bg-base-content/10">
+                    <div class="font-medium text-sm grid grid-cols-[1fr_min-content] items-center gap-2 min-w-0 justify-between">
+                      {% if user == chat.owner %}
+                        <span class="truncate">{{ chat.name }}</span>
+                        <div class="badge badge-primary badge-soft badge-sm">Dono</div>
+                      {% else %}
+                        <span class="truncate col-span-full">{{ chat.name }}</span>
+                      {% endif %}
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-info alert-soft">
+                {% heroicon_outline "information-circle" %}
+                <span>Você não participa de nenhum chat em grupo.</span>
+              </div>
+            {% endif %}
+          </div>
+          <div class="flex flex-col gap-4 bg-base-100 rounded-2xl p-4 h-fit flex-1 basis-2xs border border-base-content/10">
+            <a href="{% url "chat:chat_create" %}" class="btn btn-primary w-full">Criar chat em grupo</a>
+            <div class="divider text-xs m-0">OU</div>
+            <form class="flex flex-col gap-4"
+                  action="{% url "chat:chat_home" %}"
+                  method="post">
+              {% csrf_token %}
+              <span class="font-medium">Entrar em um chat em grupo:</span>
+              <label class="input w-full" for="id_identifier">
+                {% heroicon_outline "key" size=20 class="opacity-50" %}
+                <input type="text"
+                       name="identifier"
+                       id="id_identifier"
+                       placeholder="Digite o identificador do chat..."
+                       maxlength="128"
+                       required>
+              </label>
+              <button type="submit" class="btn btn-primary">Entrar no chat em grupo</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends "allauth/layouts/base.html" %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Criação de chat em grupo</h1>
+    <p class="opacity-50">Converse com os seus amigos a qualquer momento.</p>
+  </div>
+  <form action="{% url "chat:chat_create" %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    {% for field in form %}
+      <label class="floating-label">
+        <span>{{ field.label }}</span>
+        {{ field }}
+      </label>
+      {% if field.errors %}
+        {% for error in field.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+      {% endif %}
+    {% endfor %}
+    <div class="flex gap-2 flex-wrap">
+      <a class="btn btn-soft flex-1" href="{% url "chat:chat_home" %}">Cancelar</a>
+      <button class="btn btn-primary flex-1" type="submit">Criar chat</button>
+    </div>
+  </form>
+{% endblock content %}

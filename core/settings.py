@@ -72,6 +72,7 @@ TEMPLATES = [
             ],
             "libraries": {
                 "message_tags": "core.templatetags.message_tags",
+                "chat_tags": "chat.templatetags.chat_tags",
             },
         },
     },
@@ -85,13 +86,25 @@ AUTHENTICATION_BACKENDS = [
 
 ASGI_APPLICATION = "core.asgi.application"
 
+REDIS_URL = env.str("REDIS_URL")
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [env.str("REDIS_URL")],
+            "hosts": [REDIS_URL],
         },
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
 }
 
 DATABASES = {"default": env.db_url()}

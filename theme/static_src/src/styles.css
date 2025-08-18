@@ -12,5 +12,16 @@
   --font-inter: "Inter", sans-serif;
 }
 
-@layer components {
+@utility avatar-offline {
+  &::before {
+    content: "";
+    @apply absolute z-[1] block rounded-full bg-neutral outline-2 outline-base-100 -outline-offset-1 size-[20%] top-[5%] right-[5%];
+  }
+}
+
+@utility avatar-online {
+  &::before {
+    content: "";
+    @apply absolute z-[1] block rounded-full bg-success outline-2 outline-base-100 -outline-offset-1 size-[20%] top-[5%] right-[5%];
+  }
 }

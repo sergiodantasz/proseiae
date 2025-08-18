@@ -1,0 +1,65 @@
+{% extends "allauth/layouts/base.html" %}
+{% load heroicons %}
+{% block content %}
+  <div class="text-center mb-8">
+    <h1 class="font-bold text-2xl mb-1">Edição de chat</h1>
+    <p class="opacity-50">Preencha os campos abaixo.</p>
+  </div>
+  <form action="{% url "chat:chat_edit" chat.identifier %}"
+        method="post"
+        class="flex flex-col gap-4 mx-auto max-w-sm mb-4">
+    {% csrf_token %}
+    {% for field in form %}
+      <label class="floating-label">
+        <span>{{ field.label }}</span>
+        {{ field }}
+      </label>
+      {% if field.errors %}
+        {% for error in field.errors %}<p role="alert" class="alert alert-error alert-soft">{{ error }}</p>{% endfor %}
+      {% endif %}
+    {% endfor %}
+    {% if chat.members.all|length > 1 %}
+      <div class="collapse collapse-arrow bg-base-200">
+        <input type="checkbox">
+        <div class="collapse-title font-semibold">Membros</div>
+        <div class="collapse-content p-0 border-t border-base-100">
+          <ul class="list">
+            <li class="alert alert-warning tracking-wide m-4 alert-soft">
+              {% heroicon_outline "exclamation-circle" %}
+              <div>
+                Deixe selecionado somente os membros que você deseja <span class="font-bold">manter no chat</span>.
+              </div>
+            </li>
+            {% for member in chat.members.all %}
+              <li class="list-row items-center">
+                {% include "account/partials/_avatar.html" with request_user=member avatar_size=40 %}
+                <div class="flex flex-col">
+                  <span class="font-semibold -mb-1">{{ member.profile.name }}</span>
+                  <span class="opacity-50">@{{ member.username }}</span>
+                </div>
+                {% if user == member %}
+                  <div class="badge badge-primary badge-soft">Dono</div>
+                {% else %}
+                  <input class="checkbox checkbox-sm"
+                         type="checkbox"
+                         name="keep_member"
+                         value="{{ member.username }}"
+                         id="keep_{{ member.username }}"
+                         checked>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    <div class="flex flex-col gap-2">
+      <div class="flex w-full gap-2 flex-wrap">
+        <a class="btn btn-soft flex-1"
+           href="{% url "chat:chat" chat.identifier %}">Cancelar</a>
+        <button class="btn btn-primary flex-1" type="submit">Salvar</button>
+      </div>
+      <a href="{% url "chat:chat_delete" chat.identifier %}" class="btn btn-error w-full">Deletar</a>
+    </div>
+  </form>
+{% endblock content %}

@@ -1,0 +1,18 @@
+<form id="leave-chat-form"
+      method="post"
+      action="{% url 'chat:chat_leave' chat.identifier %}"
+      class="hidden">
+  {% csrf_token %}
+</form>
+<dialog id="leave_chat_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Confirmar saída</h3>
+    <p class="py-4">Você tem certeza que deseja sair desse chat?</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Cancelar</button>
+      </form>
+      <button class="btn btn-error" type="submit" form="leave-chat-form">Sair</button>
+    </div>
+  </div>
+</dialog>

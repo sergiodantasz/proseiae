@@ -7,15 +7,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 
 from users.forms import DeleteAccountForm, UserProfileForm
-from utils.users import set_admin_user
 
 
 @login_required
 def profile(request, username=None):
     user = request.user if not username else get_object_or_404(User, username=username)
-    ### REMOVE IT ###
-    set_admin_user(user.username)
-    #################
     profile = user.profile
     if username and user == request.user:
         return redirect("users:profile_self")

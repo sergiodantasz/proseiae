@@ -1,0 +1,16 @@
+{% if global_online_count == 0 %}
+  <div id="global_online_count"
+       class="badge badge-soft whitespace-nowrap font-normal animate-in fade-in duration-1000">
+    <div class="status"></div>
+    <span class="opacity-50">0 online</span>
+  </div>
+{% else %}
+  <div id="global_online_count"
+       class="badge badge-success badge-soft whitespace-nowrap font-normal animate-in fade-in duration-1000">
+    <div class="inline-grid *:[grid-area:1/1]">
+      <div class="status status-success animate-ping"></div>
+      <div class="status status-success"></div>
+    </div>
+    <span>{{ global_online_count }} online</span>
+  </div>
+{% endif %}

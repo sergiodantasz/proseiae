@@ -1,4 +1,4 @@
-<div class="chat gap-y-1.5 animate-in fade-in duration-500 {% if message.sender == user %}chat-end{% else %}chat-start{% endif %}">
+<div class="chat gap-y-1.5 animate-in fade-in duration-500 {% if message.sender == current_user %}chat-end{% else %}chat-start{% endif %}">
   <a href="{% url "users:profile_detail" message.sender.username %}"
      class="chat-image">
     {% include "account/partials/_avatar.html" with request_user=message.sender avatar_size=40 %}
@@ -7,7 +7,7 @@
     <span>{{ message.sender.profile.name }}</span>
     <span class="opacity-50">@{{ message.sender.username }}</span>
   </div>
-  <div class="chat-bubble break-words {% if message.sender == user %}bg-primary text-primary-content{% endif %}">
+  <div class="chat-bubble break-words {% if message.sender == current_user %}bg-primary text-primary-content{% endif %}">
     {{ message.content }}
   </div>
   <div class="chat-footer">

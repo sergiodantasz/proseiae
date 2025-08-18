@@ -1,0 +1,60 @@
+{% load chat_tags %}
+<div id="private_chats"
+     class="bg-base-200 rounded-box flex flex-col gap-2 p-2">
+  {% for chat in private_chats.all %}
+    {% with other_user=chat|other_user:current_user %}
+      <a href="{% url "chat:chat" chat.identifier %}"
+         class="grid grid-cols-[max-content_1fr] gap-2 items-center p-2 rounded-lg transition-all hover:bg-base-content/10">
+        {% if other_user in chat.online_users.all %}
+          {% include "account/partials/_avatar.html" with request_user=other_user avatar_size=30 extra_classes="avatar-online" %}
+        {% else %}
+          {% include "account/partials/_avatar.html" with request_user=other_user avatar_size=30 extra_classes="avatar-offline" %}
+        {% endif %}
+        <div class="flex items-center gap-1 min-w-0">
+          <div class="font-medium text-sm truncate">{{ other_user.profile.name }}</div>
+          <span class="text-sm opacity-50">@{{ other_user.username }}</span>
+        </div>
+      </a>
+    {% endwith %}
+  {% endfor %}
+</div>
+{% if general_online_count == 0 %}
+  <div id="general_online_count"
+       class="badge badge-soft whitespace-nowrap font-normal animate-in fade-in duration-1000">
+    <div class="status"></div>
+    <span class="opacity-50">0 online</span>
+  </div>
+{% else %}
+  <div id="general_online_count"
+       class="badge badge-success badge-soft whitespace-nowrap font-normal animate-in fade-in duration-1000">
+    <div class="inline-grid *:[grid-area:1/1]">
+      <div class="status status-success animate-ping"></div>
+      <div class="status status-success"></div>
+    </div>
+    <span>{{ general_online_count }} online</span>
+  </div>
+{% endif %}
+<div id="group_chats"
+     class="bg-base-200 rounded-box flex flex-col gap-2 p-2">
+  {% for chat in group_chats.all %}
+    <a href="{% url "chat:chat" chat.identifier %}"
+       class="p-2 rounded-lg transition-all hover:bg-base-content/10">
+      <div class="font-medium text-sm grid grid-cols-[1fr_min-content] items-center gap-2 min-w-0 justify-between">
+        {% if current_user == chat.owner %}
+          <span class="truncate">{{ chat.name }}</span>
+          <div class="flex items-center gap-2">
+            <div class="badge badge-primary badge-soft badge-sm">Dono</div>
+            {% if chat.online_users.count > 0 %}
+              <div class="inline-grid *:[grid-area:1/1]">
+                <div class="status status-success animate-ping"></div>
+                <div class="status status-success"></div>
+              </div>
+            {% endif %}
+          </div>
+        {% else %}
+          <span class="truncate col-span-full">{{ chat.name }}</span>
+        {% endif %}
+      </div>
+    </a>
+  {% endfor %}
+</div>

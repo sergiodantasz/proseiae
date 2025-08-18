@@ -1,0 +1,15 @@
+<span id="online_count" class="animate-in fade-in duration-1000">{{ online_count }}</span>
+<div id="chat_members"
+     class="flex items-center gap-2 whitespace-nowrap mr-auto">
+  {% for member in chat.members.all %}
+    <a href="{% url "users:profile_detail" member.username %}"
+       class="flex flex-col min-w-20 items-center gap-1 link link-hover decoration-primary underline-offset-2 mr-auto">
+      {% if member in chat.online_users.all %}
+        {% include "account/partials/_avatar.html" with request_user=member avatar_size=40 extra_classes="avatar-online" %}
+      {% else %}
+        {% include "account/partials/_avatar.html" with request_user=member avatar_size=40 extra_classes="avatar-offline" %}
+      {% endif %}
+      <div class="font-medium truncate w-full text-center text-sm">{{ member.profile.name }}</div>
+    </a>
+  {% endfor %}
+</div>

@@ -12,7 +12,6 @@
         <p class="mt-6">
           Converse com pessoas ao redor do mundo, compartilhe suas ideias e faça novas amizades. Tudo isso de forma simples, rápida e segura.
         </p>
-        <div class="badge badge-primary indicator mt-6">5 usuários online</div> <!-- Change -->
       </div>
     </div>
   </div>
@@ -28,42 +27,34 @@
         </div>
         <div class="flex gap-2 w-full flex-col md:flex-row">
           <div class="card card-border bg-base-100 flex-1 border-primary">
-            <div class="card-body">
+            <div class="card-body gap-4">
               <h2 class="card-title">
                 {% heroicon_solid "globe-alt" %}
                 Chat Geral
               </h2>
               <p>Explore o chat geral e converse com outros usuários globalmente.</p>
-              <div class="card-actions justify-end">
-                <a href="{% url "chat:chat" "general" %}" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
-              </div>
             </div>
           </div>
           <div class="card card-border bg-base-100 flex-1 border-primary">
-            <div class="card-body">
+            <div class="card-body gap-4">
               <h2 class="card-title">
                 {% heroicon_solid "lock-closed" %}
                 Chat Privado
               </h2>
               <p>Converse em particular, sem que outras pessoas vejam.</p>
-              <div class="card-actions justify-end">
-                <a href="" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
-              </div>
             </div>
           </div>
           <div class="card card-border bg-base-100 flex-1 border-primary">
-            <div class="card-body">
+            <div class="card-body gap-4">
               <h2 class="card-title">
                 {% heroicon_solid "user-group" %}
                 Chat em Grupo
               </h2>
               <p>Crie um bate-papo e convide outras pessoas para participarem.</p>
-              <div class="card-actions justify-end">
-                <a href="" class="btn btn-primary">{% heroicon_outline "chevron-double-right" %}</a> <!-- Add href -->
-              </div>
             </div>
           </div>
         </div>
+        <a href="{% url "chat:chat_home" %}" class="btn btn-primary btn-wide">Acessar a página de chats</a>
       </div>
     {% else %}
       <div class="flex flex-col items-center gap-4">
