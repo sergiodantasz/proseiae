@@ -3,8 +3,6 @@ from json import loads
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.contrib.auth.models import User
-from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 
@@ -22,10 +20,6 @@ class BaseConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def fetch_object_or_404(self, model, *args, **kwargs):
         return get_object_or_404(model, *args, **kwargs)
-
-    @database_sync_to_async
-    def fetch_users_by_ids(self, ids):
-        return User.objects.filter(id__in=ids)
 
 
 class ChatConsumer(BaseConsumer):
@@ -126,66 +120,6 @@ class ChatConsumer(BaseConsumer):
         await self.channel_layer.group_send(
             "chat_home",
             {"type": "on_chat_home_update"},
-        )
-
-
-class GlobalOnlineConsumer(BaseConsumer):
-    TTL = 30
-
-    async def connect(self):
-        self.user = self.scope["user"]
-        self.group_name = "global_online"
-        self.redis = cache.client.get_client()
-        await self._set_user_online()
-        await self.channel_layer.group_add(self.group_name, self.channel_name)
-        await self.accept()
-        await self._broadcast_online_users()
-
-    async def receive(self, text_data):
-        data = loads(text_data)
-        if data.get("type") == "heartbeat" and self.user.is_authenticated:
-            await self._set_or_refresh_ttl()
-
-    async def disconnect(self, close_code):
-        await self._set_user_offline()
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
-        await self._broadcast_online_users()
-
-    async def on_global_status(self, event):
-        # users = await self.fetch_users_by_ids(event["ids"])
-        await self.send_template(
-            "chat/partials/_global-online-users.html",
-            {
-                "global_online_count": len(event["ids"]),
-            },
-        )
-
-    async def _set_or_refresh_ttl(self):
-        await sync_to_async(self.redis.setex)(
-            f"user:{self.user.id}:online", self.TTL, 1
-        )
-
-    async def _set_user_online(self):
-        if self.user.is_authenticated:
-            await self._set_or_refresh_ttl()
-
-    async def _set_user_offline(self):
-        if self.user.is_authenticated:
-            await sync_to_async(self.redis.delete)(f"user:{self.user.id}:online")
-
-    async def _get_online_user_ids(self):
-        keys = await sync_to_async(self.redis.keys)("user:*:online")
-        ids = [int(k.decode().split(":")[1]) for k in keys]
-        return ids
-
-    async def _broadcast_online_users(self):
-        ids = await self._get_online_user_ids()
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                "type": "on_global_status",
-                "ids": ids,
-            },
         )
 
 
