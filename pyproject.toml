@@ -19,6 +19,7 @@ dependencies = [
   "django-tailwind>=4.4.2",
   "heroicons[django]>=2.13.0",
   "pillow>=12.1.1",
+  "psycopg[binary]>=3.3.3",
 ]
 
 [dependency-groups]
